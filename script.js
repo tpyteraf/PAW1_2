@@ -2,23 +2,32 @@ const ex3_elem = document.getElementById("ex3_element");
 const ex3_one = document.getElementById("ex3_one");
 const ex3_two = document.getElementById("ex3_two");
 
-ex3_elem.draggable = true;
-
-ex3_one.addEventListener("dragstart", (ev) => {
+function dragstartHandler(ev) {
   ev.dataTransfer.setData("app/custom", ev.target.id);
-});
+  ev.dataTransfer.effectAllowed = "move";
+}
 
-ex3_two.addEventListener("dragover", (ev) => {
+function dragoverHandler(ev) {
   if (ev.dataTransfer.types.includes("app/custom")) {
     ev.preventDefault();
+    ev.dataTransfer.dropEffect = "move";
   }
-  ev.dataTransfer.dropEffect = "move";
-});
+}
 
-ex3_two.addEventListener("drop", (ev) => {
-  ev.preventDefault();
+function dropHandler(ev) {
   const data = ev.dataTransfer.getData("app/custom");
   const elem = document.getElementById(data);
+  ev.preventDefault();
 
-  if (elem) ex3_two.appendChild(elem);
-});
+  if (elem) ev.currentTarget.appendChild(elem);
+}
+
+ex3_elem.draggable = true;
+
+ex3_elem.addEventListener("dragstart", dragstartHandler);
+
+ex3_one.addEventListener("dragover", dragoverHandler);
+ex3_two.addEventListener("dragover", dragoverHandler);
+
+ex3_one.addEventListener("drop", dropHandler);
+ex3_two.addEventListener("drop", dropHandler);
