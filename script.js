@@ -5,11 +5,11 @@ const ex3_two = document.getElementById("ex3_two");
 ex3_elem.draggable = true;
 
 ex3_one.addEventListener("dragstart", (ev) => {
-  ev.dataTransfer.setData("text/plain", ev.target.id);
+  ev.dataTransfer.setData("app/custom", ev.target.id);
 });
 
 ex3_two.addEventListener("dragover", (ev) => {
-  if (ev.dataTransfer.types.includes("text/plain")) {
+  if (ev.dataTransfer.types.includes("app/custom")) {
     ev.preventDefault();
   }
   ev.dataTransfer.dropEffect = "move";
@@ -17,6 +17,8 @@ ex3_two.addEventListener("dragover", (ev) => {
 
 ex3_two.addEventListener("drop", (ev) => {
   ev.preventDefault();
-  const data = ev.dataTransfer.getData("text");
-  ex3_two.appendChild(document.getElementById(data));
+  const data = ev.dataTransfer.getData("app/custom");
+  const elem = document.getElementById(data);
+
+  if (elem) ex3_two.appendChild(elem);
 });
